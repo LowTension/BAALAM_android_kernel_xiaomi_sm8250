@@ -1328,7 +1328,7 @@ static int do_read_cd(struct fsg_common *common)
 		/* Wait for the next buffer to become available */
 		bh = common->next_buffhd_to_fill;
 		while (bh->state != BUF_STATE_EMPTY) {
-			rc = sleep_thread(common, true);
+			rc = sleep_thread(common, true, bh);
 			if (rc)
 				return rc;
 		}
