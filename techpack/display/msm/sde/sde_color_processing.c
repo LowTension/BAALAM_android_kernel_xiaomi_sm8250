@@ -237,8 +237,8 @@ static void update_pu_feature_enable(struct sde_crtc *sde_crtc,
 
 	/* clear cached ROI list when feature is disabled */
 	if ((sde_crtc->cp_pu_feature_mask == 0) &&
-		(sde_crtc_state->cached_user_roi_list.num_rects != 0)) {
-		memset(&sde_crtc_state->cached_user_roi_list, 0,
+		(sde_crtc->cached_user_roi_list.num_rects != 0)) {
+		memset(&sde_crtc->cached_user_roi_list, 0,
 				sizeof(struct msm_roi_list));
 	}
 }
@@ -1562,7 +1562,8 @@ static int sde_cp_crtc_check_pu_features(struct drm_crtc *crtc)
 
 	memset(&hw_cfg, 0, sizeof(hw_cfg));
 	hw_cfg.num_of_mixers = sde_crtc->num_mixers;
-	hw_cfg.payload = &sde_crtc_state->user_roi_list;
+    hw_cfg.payload = (sde_crtc_state->user_roi_list.num_rects) ?
+		&sde_crtc_state->user_roi_list : NULL;
 	hw_cfg.len = sizeof(sde_crtc_state->user_roi_list);
 	for (i = 0; i < hw_cfg.num_of_mixers; i++)
 		hw_cfg.dspp[i] = sde_crtc->mixers[i].hw_dspp;
@@ -1700,18 +1701,18 @@ static int sde_cp_crtc_set_pu_features(struct drm_crtc *crtc, bool *need_flush)
 
 	/* early return if not a partial update frame or no change in rois */
 	if ((sde_crtc_state->user_roi_list.num_rects == 0) &&
-		(sde_crtc_state->cached_user_roi_list.num_rects == 0)) {
+		(sde_crtc->cached_user_roi_list.num_rects == 0)) {
 		DRM_DEBUG_DRIVER("no partial update required\n");
 		return 0;
 	} else if (sde_crtc_state->user_roi_list.num_rects == 0) {
 		DRM_DEBUG_DRIVER("transition from PU to full update\n");
-		memset(&sde_crtc_state->cached_user_roi_list, 0,
+		memset(&sde_crtc->cached_user_roi_list, 0,
 				sizeof(struct msm_roi_list));
 	} else {
 		sde_kms_rect_merge_rectangles(&sde_crtc_state->user_roi_list,
 				&user_rect);
 		sde_kms_rect_merge_rectangles(
-				&sde_crtc_state->cached_user_roi_list,
+				&sde_crtc->cached_user_roi_list,
 				&cached_rect);
 		if (sde_kms_rect_is_equal(&user_rect, &cached_rect)) {
 			DRM_DEBUG_DRIVER("no change in list of ROIs\n");
@@ -1760,7 +1761,7 @@ static int sde_cp_crtc_set_pu_features(struct drm_crtc *crtc, bool *need_flush)
 	}
 
 	if (sde_crtc_state->user_roi_list.num_rects != 0) {
-		memcpy(&sde_crtc_state->cached_user_roi_list,
+		memcpy(&sde_crtc->cached_user_roi_list,
 				&sde_crtc_state->user_roi_list,
 				sizeof(struct msm_roi_list));
 	}
