@@ -2950,6 +2950,9 @@ static int binder_proc_transaction(struct binder_transaction *t,
 	struct binder_priority node_prio;
 	bool oneway = !!(t->flags & TF_ONE_WAY);
 	bool pending_async = false;
+#if IS_ENABLED(CONFIG_PERF_HUMANASK)
+	int task_pri = 0;
+#endif
 
 	BUG_ON(!node);
 	binder_node_lock(node);
@@ -2984,6 +2987,18 @@ static int binder_proc_transaction(struct binder_transaction *t,
 		thread = binder_select_thread_ilocked(proc);
 
 	if (thread) {
+#if IS_ENABLED(CONFIG_PERF_HUMANASK)
+		if (t->from && t->from->task)
+			task_pri = t->from->task->human_task;
+
+		if (!oneway && task_pri && task_pri <=4 ) {
+			if (thread->task && !t->from->task->inherit_task) {
+				thread->task->human_task++;
+				thread->task->inherit_task = 1;
+			}
+		}
+#endif
+
 #if IS_ENABLED(CONFIG_BINDER_OPT)
 		if (!oneway)
     			binder_thread_set_inherit_top_app(thread, t->from);
@@ -3693,6 +3708,12 @@ static void binder_transaction(struct binder_proc *proc,
 #endif
 		binder_restore_priority(current, in_reply_to->saved_priority);
 		binder_free_transaction(in_reply_to);
+#if IS_ENABLED(CONFIG_PERF_HUMANASK)
+		if (thread->task && thread->task->inherit_task) {
+			thread->task->inherit_task = 0 ;
+			thread->task->human_task = 0;
+		}
+#endif
 	} else if (!(t->flags & TF_ONE_WAY)) {
 		BUG_ON(t->buffer->async_transaction != 0);
 		binder_inner_proc_lock(proc);
