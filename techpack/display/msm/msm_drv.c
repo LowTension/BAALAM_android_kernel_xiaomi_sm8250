@@ -62,8 +62,11 @@
 #define MSM_VERSION_PATCHLEVEL	0
 
 static DEFINE_MUTEX(msm_release_lock);
+
+#if IS_ENABLED(CONFIG_MI_DRM_OPT)
 atomic_t resume_pending;
 wait_queue_head_t resume_wait_q;
+#endif
 
 static void msm_fb_output_poll_changed(struct drm_device *dev)
 {
@@ -1721,6 +1724,7 @@ static struct drm_driver msm_driver = {
 };
 
 #ifdef CONFIG_PM_SLEEP
+#if IS_ENABLED(CONFIG_MI_DRM_OPT)
 static int msm_pm_prepare(struct device *dev)
 {
 	atomic_inc(&resume_pending);
@@ -1733,6 +1737,7 @@ static void msm_pm_complete(struct device *dev)
 	wake_up_all(&resume_wait_q);
 	return;
 }
+#endif
 
 static int msm_pm_suspend(struct device *dev)
 {
@@ -1819,8 +1824,10 @@ static int msm_runtime_resume(struct device *dev)
 #endif
 
 static const struct dev_pm_ops msm_pm_ops = {
+#if IS_ENABLED(CONFIG_MI_DRM_OPT)
 	.prepare = msm_pm_prepare,
 	.complete = msm_pm_complete,
+#endif
 	SET_SYSTEM_SLEEP_PM_OPS(msm_pm_suspend, msm_pm_resume)
 	SET_RUNTIME_PM_OPS(msm_runtime_suspend, msm_runtime_resume, NULL)
 };
