@@ -73,8 +73,6 @@ struct hdd_context;
 #define VENDOR1_AP_OUI_TYPE "\x00\xE0\x4C"
 #define VENDOR1_AP_OUI_TYPE_SIZE 3
 
-#define WLAN_BSS_MEMBERSHIP_SELECTOR_VHT_PHY 126
-#define WLAN_BSS_MEMBERSHIP_SELECTOR_HT_PHY 127
 #define BASIC_RATE_MASK   0x80
 #define RATE_MASK         0x7f
 
@@ -127,6 +125,7 @@ struct hdd_context;
 #if !defined(TDLS_MGMT_VERSION2)
 #define TDLS_MGMT_VERSION2 0
 #endif
+#endif
 
 /**
  * hdd_convert_cfgdot11mode_to_80211mode() - Function to convert cfg dot11 mode
@@ -137,7 +136,6 @@ struct hdd_context;
  */
 enum qca_wlan_802_11_mode
 hdd_convert_cfgdot11mode_to_80211mode(enum csr_cfgdot11mode mode);
-#endif
 
 #define HDD_SET_BIT(__param, __val)    ((__param) |= (1 << (__val)))
 
