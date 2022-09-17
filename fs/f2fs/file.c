@@ -275,10 +275,6 @@ static int f2fs_do_sync_file(struct file *file, loff_t start, loff_t end,
 	ktime_t start_time, delta;
 	unsigned long long duration;
 
-#if defined(CONFIG_UFSTW)
-	bool turbo_set = false;
-#endif
-
 	if (unlikely(f2fs_readonly(inode->i_sb)))
 		return 0;
 
