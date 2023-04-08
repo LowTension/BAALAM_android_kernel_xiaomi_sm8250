@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2012, 2014-2017, 2020 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -38,6 +39,7 @@ typedef enum {
     CFG_NV_SERVICE_GROUP     = 4,
     WDI_IPA_SERVICE_GROUP    = 5,
     PACKET_LOG_SERVICE_GROUP = 6,
+    LPASS_SERVICE_GROUP      = 7,
 
     HTC_TEST_GROUP           = 254,
     HTC_SERVICE_GROUP_LAST   = 255
@@ -58,7 +60,8 @@ typedef enum {
 #define WMI_CONTROL_SVC_WMAC1  MAKE_SERVICE_ID(WMI_SERVICE_GROUP,5)
 #define WMI_CONTROL_SVC_WMAC2  MAKE_SERVICE_ID(WMI_SERVICE_GROUP,6)
 #define WMI_CONTROL_DIAG_SVC   MAKE_SERVICE_ID(WMI_SERVICE_GROUP,7)
-#define WMI_MAX_SERVICES  8
+#define WMI_CONTROL_DBR_SVC    MAKE_SERVICE_ID(WMI_SERVICE_GROUP,8)
+#define WMI_MAX_SERVICES  9
 
 #define NMI_CONTROL_SVC   MAKE_SERVICE_ID(NMI_SERVICE_GROUP,0)
 #define NMI_DATA_SVC      MAKE_SERVICE_ID(NMI_SERVICE_GROUP,1)
@@ -95,6 +98,8 @@ typedef enum {
 #define WDI_IPA_TX_SVC MAKE_SERVICE_ID(WDI_IPA_SERVICE_GROUP,0)
 
 #define PACKET_LOG_SVC MAKE_SERVICE_ID(PACKET_LOG_SERVICE_GROUP,0)
+
+#define LPASS_DATA_MSG_SVC MAKE_SERVICE_ID(LPASS_SERVICE_GROUP,0)
 
 /*
  * Directions for interconnect pipe configuration.

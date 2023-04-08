@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2011-2021 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * Previously licensed under the ISC license by Qualcomm Atheros, Inc.
  *
@@ -64,10 +65,10 @@ typedef  enum  {
     WMI_SERVICE_GPIO=25,                    /* GPIO service */
     WMI_SERVICE_STA_DTIM_PS_MODULATED_DTIM=26, /* Modulated DTIM support */
     WMI_STA_UAPSD_BASIC_AUTO_TRIG=27,       /* Basic version of station UAPSD AC Trigger Generation Method with
-                                             * variable tigger periods (service, delay, and suspend intervals) */
+                                             * variable trigger periods (service, delay, and suspend intervals) */
     WMI_STA_UAPSD_VAR_AUTO_TRIG=28,         /* Station UAPSD AC Trigger Generation Method with variable
                                              * trigger periods (service, delay, and suspend intervals) */
-    WMI_SERVICE_STA_KEEP_ALIVE=29,          /* Serivce to support the STA KEEP ALIVE mechanism */
+    WMI_SERVICE_STA_KEEP_ALIVE=29,          /* Service to support the STA KEEP ALIVE mechanism */
     WMI_SERVICE_TX_ENCAP=30,                /* Packet type for TX encapsulation */
     WMI_SERVICE_AP_PS_DETECT_OUT_OF_SYNC=31, /* detect out-of-sync sleeping stations */
     WMI_SERVICE_EARLY_RX=32,                /* adaptive early-rx feature */
@@ -522,8 +523,8 @@ typedef  enum  {
     WMI_SERVICE_WAPI_CONCURRENCY_SUPPORTED = 277, /* Indicates FW support for WAPI concurrency */
     WMI_SERVICE_SAP_CONNECTED_D3WOW = 278,  /* Indicates FW support for D3WoW for SAP connected case */
     WMI_SERVICE_GO_CONNECTED_D3WOW = 279,   /* Indicates FW support for D3WoW for P2P GO connected case */
-    WMI_SERVICE_EXT_TPC_REG_SUPPORT = 280, /* Support for new 6G TPC power limits */
-    WMI_SERVICE_REG_CC_EXT_EVENT_SUPPORT = 281, /* Support for Extended REG_CC Event with additional params for 6G */
+    WMI_SERVICE_EXT_TPC_REG_SUPPORT = 280, /* Support for new 6 GHz TPC power limits */
+    WMI_SERVICE_REG_CC_EXT_EVENT_SUPPORT = 281, /* Support for Extended REG_CC Event with additional params for 6 GHz */
     WMI_SERVICE_NDI_TXBF_SUPPORT = 282, /* Indicates FW support for Tx beamforming with NDI VDEV */
     WMI_SERVICE_ENABLE_LOWER_6G_EDGE_CH_SUPP = 283, /* Indicates FW support for enabling lower 6 GHz edge channel 5935 */
     WMI_SERVICE_DISABLE_UPPER_6G_EDGE_CH_SUPP = 284, /* Indicates FW support for disabling upper 6 GHz edge channel 7115 */
@@ -557,6 +558,55 @@ typedef  enum  {
      */
     WMI_SERVICE_SPATIAL_REUSE_ENHANCEMENT_SUPPORT = 306,
     WMI_SERVICE_MU_SNIF = 307, /* FW support MU sniffer */
+    WMI_SERVICE_ICMP_OFFLOAD = 308, /* FW supports ping offload during APPS suspend */
+    WMI_SERVICE_RTSCTS_FOR_UNICAST_MGMT_SUPPORT = 309, /* Indicates FW support RTSCTS for unicast management */
+    WMI_SERVICE_DYNAMIC_VDEV_MAC_ADDR_UPDATE_SUPPORT = 310, /* FW supports dynamic vdev mac address updating */
+    WMI_SERVICE_SAWF_LEVEL0 = 311, /* FW supports WMI_SAWF_SVC_CLASS CFG_CMD + DISABLE_CMD msgs */
+    WMI_SERVICE_RTT_11AZ_NTB_SUPPORT = 312, /* FW support for 11AZ non trigger based ranging */
+    WMI_SERVICE_RTT_11AZ_TB_SUPPORT = 313, /* FW support for 11AZ trigger based ranging ISTA role */
+    WMI_SERVICE_RTT_11AZ_MAC_SEC_SUPPORT = 314, /* FW support for 11AZ secure FTM */
+    WMI_SERVICE_RTT_11AZ_MAC_PHY_SEC_SUPPORT = 315, /* FW support for 11AZ secure LTF + FTM */
+    WMI_SERVICE_SPECTRAL_SESSION_INFO_SUPPORT = 316, /* Information corresponding to each Spectral scan session will be sent by the FW before the reports corresponding to that session are sent */
+    WMI_SERVICE_PDEV_RATE_CONFIG_SUPPORT = 317, /* Support rate configurations per PDEV */
+    WMI_SERVICE_MLO_STA_NAN_NDI_SUPPORT = 318, /* FW support for NAN and NDP support with MLO STA */
+    WMI_SERVICE_PROBE_ALL_BW_SUPPORT = 319, /* FW support to probe on higher BW even if the probe fails on lower BW - IOT issue */
+    WMI_SERVICE_PKTLOG_DECODE_INFO_SUPPORT = 320, /* FW supports embedding Pktlog decode info in the Pktlog trace file level header */
+    WMI_SERVICE_PNO_SCAN_CONFIG_PER_CHANNEL = 321, /* Indicates that FW supports per channel configuration support in the PNO scan start command */
+    WMI_SERVICE_MULTIPLE_PEER_GROUP_CMD_SUPPORT = 322, /* FW support for multiple peer group command */
+    WMI_SERVICE_AFC_RESET_SUPPORT = 323, /* Indicates FW supports AFC reset */
+    WMI_SERVICE_FP_PHY_ERR_FILTER_SUPPORT = 324, /* FW supports monitor ring configurations for filtering in PHY error packets */
+    WMI_IS_RADAR_FOUND_CHAN_FREQ_IS_CENTER_FREQ = 325, /* FW Supporting radar event on the actual center frequency radar was detected */
+    WMI_SERVICE_BIOS_SAR_SUPPORT = 326, /* FW support for SAR parameter stored in BIOS */
+    WMI_SERVICE_REO_QREF_SUPPORT = 327, /* FW supports REO QREF */
+    WMI_SERVICE_DELETE_ALL_PEER_BITMAP_SUPPORT = 328, /* target supports cmd to delete all specific peer type within a vdev */
+    WMI_SERVICE_PN_REPLAY_CHECK_SUPPORT = 329, /* FW support to check RX mgmt frames has invalid PN in packets */
+    WMI_SERVICE_COMBINED_SET_PARAM_SUPPORT = 330, /* FW Supporting set param cmd combined for multiple params */
+    WMI_SERVICE_PDEV_RSSI_DBM_CONV_EVENT_SUPPORT = 331, /* FW supports advertising RSSI dB to dBm conversion params to host via WMI_PDEV_RSSI_DBM_CONVERSION_PARAMS_INFO_EVENTID */
+    WMI_SERVICE_PDEV_TELEMETRY_STATS_SUPPORT = 332,
+    WMI_SERVICE_ROAM_STAT_PER_CANDIDATE_FRAME_INFO_SUPPORT = 333, /* FW supports to send frame info for each candidate in roam stat */
+    WMI_SERVICE_HW_TX_POWER_CAPS_SIGNED_SUPPORT = 334, /* Indicates FW supports updating of Tx power capabilities as signed value */
+    WMI_SERVICE_MULTI_CLIENT_LL_SUPPORT = 335, /* FW supports set param cmd combined for multiple params */
+    WMI_SERVICE_AFC_PAYLOAD_CLEAR_SUPPORT = 336, /* FW supports clearing the AFC response payload in proxy mode */
+    WMI_SERVICE_FW_INI_PARSE_SUPPORT = 337, /* FW supports parsing ini configuration file */
+    WMI_SERVICE_TDLS_6GHZ_SUPPORT = 338, /* FW supports 6GHz TDLS both on base channel and offchannel */
+    WMI_SERVICE_LINKSPEED_ROAM_TRIGGER_SUPPORT = 339, /* FW supports linkspeed trigger roam */
+    WMI_SERVICE_UMAC_HANG_RECOVERY_SUPPORT = 340, /* FW supports recovering system from UMAC hang condition */
+    WMI_SERVICE_COAP_OFFLOAD_SUPPORT = 341, /* FW supports CoAP (the Constrained Application Protocol) offload */
+    WMI_SERVICE_TDLS_WIDEBAND_SUPPORT = 342, /* FW supports Wideband TDLS */
+    WMI_SERVICE_FEATURE_SET_EVENT_SUPPORT = 343, /* FW supports sending of supported feature set event during init time */
+    WMI_SERVICE_HALPHY_CTRL_PATH_STATS = 344, /* HALPHY STATS through control path */
+    WMI_SERVICE_PEER_CHWIDTH_PUNCTURE_BITMAP_SUPPORT = 345, /* FW supports puncture bitmap change with channel width switch */
+    WMI_SERVICE_BANG_RADAR_320_SUPPORT = 346, /* Host to send frequency offset for bang radar in extended field for 320M support */
+    WMI_SERVICE_XGAP_SUPPORT = 347, /* FW support for XGAP */
+    WMI_SERVICE_OBSS_PER_PACKET_SR_SUPPORT = 348, /* Spatial Reuse support for per PPDU setting */
+    WMI_SERVICE_MULTIPLE_VDEV_RESTART_BITMAP_SUPPORT = 349, /* Extended Multiple VDEV Restart with Bitmap Support */
+    WMI_SERVICE_WMI_SERVICE_WPA3_SHA384_ROAM_SUPPORT = 350, /* Indicates FW supports WPA3 SHA384 roaming */
+    WMI_SERVICE_ODD_LIVEDUMP_SUPPORT = 351, /* Support for ODD Livedump from the FW */
+    WMI_SERVICE_EIRP_PREFERRED_SUPPORT = 352, /* Support for OOBE feature where only EIRP powers will be sent in 6 GHz TPC WMI */
+    WMI_SERVICE_RTT_TX_RX_CHAIN_IDX_SUPPORT = 353, /* FW Supports configuring Tx and Rx Chainmask in intiator and Responder */
+    WMI_SERVICE_RESTRICTED_TWT = 354, /* Support for R-TWT feature */
+    WMI_SERVICE_SLO_SUPPORTED = 355, /* Support for Single Link 11BE */
+    WMI_SERVICE_RTT_11AZ_TB_RSTA_SUPPORT = 356, /* FW support for 11AZ trigger based ranging Responder (RSTA) role */
 
 
     WMI_MAX_EXT2_SERVICE
@@ -591,15 +641,15 @@ typedef  enum  {
  */
 #define WMI_SERVICE_ENABLE(pwmi_svc_bmap,svc_id) \
     ( (pwmi_svc_bmap)[(svc_id)/(sizeof(A_UINT32))] |= \
-         (1 << ((svc_id)%(sizeof(A_UINT32)))) )
+         ((A_UINT32) 1 << ((svc_id)%(sizeof(A_UINT32)))) )
 
 #define WMI_SERVICE_DISABLE(pwmi_svc_bmap,svc_id) \
     ( (pwmi_svc_bmap)[(svc_id)/(sizeof(A_UINT32))] &=  \
-      ( ~(1 << ((svc_id)%(sizeof(A_UINT32)))) ) )
+      ( ~((A_UINT32) 1 << ((svc_id)%(sizeof(A_UINT32)))) ) )
 
 #define WMI_SERVICE_IS_ENABLED(pwmi_svc_bmap,svc_id) \
     ( ((pwmi_svc_bmap)[(svc_id)/(sizeof(A_UINT32))] &  \
-       (1 << ((svc_id)%(sizeof(A_UINT32)))) ) != 0)
+       ((A_UINT32) 1 << ((svc_id)%(sizeof(A_UINT32)))) ) != 0)
 
 
 #define WMI_SERVICE_EXT_ENABLE(pwmi_svc_bmap, pwmi_svc_ext_bmap, svc_id) \
@@ -609,7 +659,7 @@ typedef  enum  {
         } else { \
             int word = ((svc_id) - WMI_MAX_SERVICE) / 32; \
             int bit = (svc_id) & 0x1f; /* svc_id mod 32 */ \
-            (pwmi_svc_ext_bmap)[word] |= (1 << bit); \
+            (pwmi_svc_ext_bmap)[word] |= ((A_UINT32) 1 << bit); \
         } \
     } while (0)
 
@@ -620,7 +670,7 @@ typedef  enum  {
         } else { \
             int word = ((svc_id) - WMI_MAX_SERVICE) / 32; \
             int bit = (svc_id) & 0x1f; /* svc_id mod 32 */ \
-            (pwmi_svc_ext_bmap)[word] &= ~(1 << bit); \
+            (pwmi_svc_ext_bmap)[word] &= ~((A_UINT32) 1 << bit); \
         } \
     } while (0)
 
@@ -644,7 +694,7 @@ typedef  enum  {
         } else { \
             int word = ((svc_id) - WMI_MAX_EXT_SERVICE) / 32; \
             int bit = (svc_id) & 0x1f; /* svc_id mod 32 */ \
-            (pwmi_svc_ext2_bmap)[word] |= (1 << bit); \
+            (pwmi_svc_ext2_bmap)[word] |= ((A_UINT32) 1 << bit); \
         } \
     } while (0)
 
@@ -658,7 +708,7 @@ typedef  enum  {
         } else { \
             int word = ((svc_id) - WMI_MAX_EXT_SERVICE) / 32; \
             int bit = (svc_id) & 0x1f; /* svc_id mod 32 */ \
-            (pwmi_svc_ext2_bmap)[word] &= ~(1 << bit); \
+            (pwmi_svc_ext2_bmap)[word] &= ~((A_UINT32) 1 << bit); \
         } \
     } while (0)
 
