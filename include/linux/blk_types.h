@@ -351,8 +351,6 @@ enum req_flag_bits {
 	__REQ_SWAP,		/* swapping request. */
 	/* for wbt use*/
 	__REQ_WBT,
-
-	__REQ_HPB_PREFER,	/* HPB Flag */
 	__REQ_NR_BITS,		/* stops here */
 };
 
@@ -376,7 +374,6 @@ enum req_flag_bits {
 
 #define REQ_DRV			(1ULL << __REQ_DRV)
 #define REQ_SWAP		(1ULL << __REQ_SWAP)
-#define REQ_HPB_PREFER          (1ULL << __REQ_HPB_PREFER)
 
 #define REQ_WBT 		(1ULL << __REQ_WBT)
 
