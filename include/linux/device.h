@@ -940,6 +940,7 @@ struct dev_links_info {
 	struct list_head consumers;
 	struct list_head needs_suppliers;
 	struct list_head defer_hook;
+	struct list_head defer_sync;
 	bool need_for_probe;
 	enum dl_dev_state status;
 
