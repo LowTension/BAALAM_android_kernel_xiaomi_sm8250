@@ -640,6 +640,25 @@ static void f2fs_sb_release(struct kobject *kobj)
 	complete(&sbi->s_kobj_unregister);
 }
 
+enum feat_id {
+	FEAT_CRYPTO = 0,
+	FEAT_BLKZONED,
+	FEAT_ATOMIC_WRITE,
+	FEAT_EXTRA_ATTR,
+	FEAT_PROJECT_QUOTA,
+	FEAT_INODE_CHECKSUM,
+	FEAT_FLEXIBLE_INLINE_XATTR,
+	FEAT_QUOTA_INO,
+	FEAT_INODE_CRTIME,
+	FEAT_LOST_FOUND,
+	FEAT_VERITY,
+	FEAT_SB_CHECKSUM,
+	FEAT_CASEFOLD,
+	FEAT_COMPRESSION,
+	FEAT_TEST_DUMMY_ENCRYPTION_V2,
+	FEAT_ENCRYPTED_CASEFOLD,
+};
+
 /*
  * Note that there are three feature list entries:
  * 1) /sys/fs/f2fs/features
@@ -661,13 +680,26 @@ static void f2fs_sb_release(struct kobject *kobj)
 static ssize_t f2fs_feature_show(struct f2fs_attr *a,
 		struct f2fs_sb_info *sbi, char *buf)
 {
-	return sprintf(buf, "supported\n");
-}
-
-#define F2FS_FEATURE_RO_ATTR(_name)				\
-static struct f2fs_attr f2fs_attr_##_name = {			\
-	.attr = {.name = __stringify(_name), .mode = 0444 },	\
-	.show	= f2fs_feature_show,				\
+	switch (a->id) {
+	case FEAT_CRYPTO:
+	case FEAT_BLKZONED:
+	case FEAT_ATOMIC_WRITE:
+	case FEAT_EXTRA_ATTR:
+	case FEAT_PROJECT_QUOTA:
+	case FEAT_INODE_CHECKSUM:
+	case FEAT_FLEXIBLE_INLINE_XATTR:
+	case FEAT_QUOTA_INO:
+	case FEAT_INODE_CRTIME:
+	case FEAT_LOST_FOUND:
+	case FEAT_VERITY:
+	case FEAT_SB_CHECKSUM:
+	case FEAT_CASEFOLD:
+	case FEAT_COMPRESSION:
+	case FEAT_TEST_DUMMY_ENCRYPTION_V2:
+	case FEAT_ENCRYPTED_CASEFOLD:
+		return sprintf(buf, "supported\n");
+	}
+	return 0;
 }
 
 static ssize_t f2fs_sb_feature_show(struct f2fs_attr *a,
@@ -701,6 +733,13 @@ static struct f2fs_attr f2fs_attr_##_name = {			\
 
 #define F2FS_GENERAL_RO_ATTR(name) \
 static struct f2fs_attr f2fs_attr_##name = __ATTR(name, 0444, name##_show, NULL)
+
+#define F2FS_FEATURE_RO_ATTR(_name, _id)			\
+static struct f2fs_attr f2fs_attr_##_name = {			\
+	.attr = {.name = __stringify(_name), .mode = 0444 },	\
+	.show	= f2fs_feature_show,				\
+	.id	= _id,						\
+}
 
 #define F2FS_STAT_ATTR(_struct_type, _struct_name, _name, _elname)	\
 static struct f2fs_attr f2fs_attr_##_name = {			\
@@ -780,38 +819,36 @@ F2FS_GENERAL_RO_ATTR(avg_vblocks);
 #endif
 
 #ifdef CONFIG_FS_ENCRYPTION
-F2FS_FEATURE_RO_ATTR(encryption);
-F2FS_FEATURE_RO_ATTR(test_dummy_encryption_v2);
+F2FS_FEATURE_RO_ATTR(encryption, FEAT_CRYPTO);
+F2FS_FEATURE_RO_ATTR(test_dummy_encryption_v2, FEAT_TEST_DUMMY_ENCRYPTION_V2);
 #ifdef CONFIG_UNICODE
-F2FS_FEATURE_RO_ATTR(encrypted_casefold);
+F2FS_FEATURE_RO_ATTR(encrypted_casefold, FEAT_ENCRYPTED_CASEFOLD);
 #endif
 #endif /* CONFIG_FS_ENCRYPTION */
 #ifdef CONFIG_BLK_DEV_ZONED
 F2FS_FEATURE_RO_ATTR(block_zoned);
 #endif
-F2FS_FEATURE_RO_ATTR(atomic_write);
-F2FS_FEATURE_RO_ATTR(extra_attr);
-F2FS_FEATURE_RO_ATTR(project_quota);
-F2FS_FEATURE_RO_ATTR(inode_checksum);
-F2FS_FEATURE_RO_ATTR(flexible_inline_xattr);
-F2FS_FEATURE_RO_ATTR(quota_ino);
-F2FS_FEATURE_RO_ATTR(inode_crtime);
-F2FS_FEATURE_RO_ATTR(lost_found);
+F2FS_FEATURE_RO_ATTR(atomic_write, FEAT_ATOMIC_WRITE);
+F2FS_FEATURE_RO_ATTR(extra_attr, FEAT_EXTRA_ATTR);
+F2FS_FEATURE_RO_ATTR(project_quota, FEAT_PROJECT_QUOTA);
+F2FS_FEATURE_RO_ATTR(inode_checksum, FEAT_INODE_CHECKSUM);
+F2FS_FEATURE_RO_ATTR(flexible_inline_xattr, FEAT_FLEXIBLE_INLINE_XATTR);
+F2FS_FEATURE_RO_ATTR(quota_ino, FEAT_QUOTA_INO);
+F2FS_FEATURE_RO_ATTR(inode_crtime, FEAT_INODE_CRTIME);
+F2FS_FEATURE_RO_ATTR(lost_found, FEAT_LOST_FOUND);
 #ifdef CONFIG_FS_VERITY
-F2FS_FEATURE_RO_ATTR(verity);
+F2FS_FEATURE_RO_ATTR(verity, FEAT_VERITY);
 #endif
-F2FS_FEATURE_RO_ATTR(sb_checksum);
+F2FS_FEATURE_RO_ATTR(sb_checksum, FEAT_SB_CHECKSUM);
 #ifdef CONFIG_UNICODE
-F2FS_FEATURE_RO_ATTR(casefold);
+F2FS_FEATURE_RO_ATTR(casefold, FEAT_CASEFOLD);
 #endif
-F2FS_FEATURE_RO_ATTR(readonly);
 #ifdef CONFIG_F2FS_FS_COMPRESSION
-F2FS_FEATURE_RO_ATTR(compression);
+F2FS_FEATURE_RO_ATTR(compression, FEAT_COMPRESSION);
 F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, compr_written_block, compr_written_block);
 F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, compr_saved_block, compr_saved_block);
 F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, compr_new_inode, compr_new_inode);
 #endif
-F2FS_FEATURE_RO_ATTR(pin_file);
 
 /* For ATGC */
 F2FS_RW_ATTR(ATGC_INFO, atgc_management, atgc_candidate_ratio, candidate_ratio);
@@ -934,11 +971,9 @@ static struct attribute *f2fs_feat_attrs[] = {
 #ifdef CONFIG_UNICODE
 	ATTR_LIST(casefold),
 #endif
-	ATTR_LIST(readonly),
 #ifdef CONFIG_F2FS_FS_COMPRESSION
 	ATTR_LIST(compression),
 #endif
-	ATTR_LIST(pin_file),
 	NULL,
 };
 
