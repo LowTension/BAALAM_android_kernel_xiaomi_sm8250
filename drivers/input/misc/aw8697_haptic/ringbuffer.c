@@ -51,7 +51,7 @@ int write_rb(const char *data, int32_t size)
 
 	while ((grb->aval_size < size) && (!atomic_read(&grb->exit))) {
 		pr_debug("no space avaliable");
-		pr_debug("%s  goint to waiting irq exit\n", __func__);
+		pr_info("%s  goint to waiting irq exit\n", __func__);
 		ret = wait_event_interruptible(grb->wait_q, atomic_read(&grb->buf_condition) == 1);
 		if (ret == -ERESTARTSYS) {
 			 pr_err("%s wake up by signal return erro\n", __func__);
