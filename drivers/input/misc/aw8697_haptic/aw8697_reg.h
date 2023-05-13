@@ -1,4 +1,3 @@
-/* SPDX-License-Identifier: GPL-2.0 */
 #ifndef _AW8697_REG_H_
 #define _AW8697_REG_H_
 
