@@ -678,7 +678,6 @@ static ssize_t wakeup_enable_set(struct device *dev,
 	return ret;
 }
 
-static DEVICE_ATTR(power_cfg, S_IWUSR, NULL, wakeup_enable_set);
 static DEVICE_ATTR(wakeup_enable, S_IWUSR, NULL, wakeup_enable_set);
 
 /**
@@ -843,7 +842,6 @@ static struct attribute *attributes[] = {
 	&dev_attr_handle_wakelock.attr,
 	&dev_attr_clk_enable.attr,
 	&dev_attr_irq_enable.attr,
-	&dev_attr_power_cfg.attr,
 	&dev_attr_irq.attr,
 	&dev_attr_vendor.attr,
 #if IS_ENABLED(CONFIG_MI_DRM_OPT)
