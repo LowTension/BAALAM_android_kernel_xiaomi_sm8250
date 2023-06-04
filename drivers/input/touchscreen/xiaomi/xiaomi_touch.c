@@ -517,7 +517,6 @@ static int xiaomi_touch_parse_dt(struct device *dev, struct xiaomi_touch_pdata *
 	return 0;
 }
 
-#if XIAOMI_ROI
 void xiaomi_touch_send_btn_tap_key(int status)
 {
 	if (xiaomi_touch_dev.key_input_dev) {
@@ -531,7 +530,6 @@ void xiaomi_touch_send_btn_tap_key(int status)
 	}
 }
 EXPORT_SYMBOL(xiaomi_touch_send_btn_tap_key);
-#endif
 
 static int xiaomi_touch_probe(struct platform_device *pdev)
 {
