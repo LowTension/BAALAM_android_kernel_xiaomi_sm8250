@@ -3853,6 +3853,7 @@ static void ffs_func_unbind(struct usb_configuration *c,
 	func->function.ssp_descriptors = NULL;
 	func->interfaces_nums = NULL;
 
+
 	if (opts->refcnt) {
 		ffs_event_add(ffs, FUNCTIONFS_UNBIND);
 
