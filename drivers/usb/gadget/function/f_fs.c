@@ -1827,9 +1827,6 @@ static void ffs_data_put(struct ffs_data *ffs)
 
 static void ffs_data_closed(struct ffs_data *ffs)
 {
-	struct ffs_epfile *epfiles;
-	unsigned long flags;
-
 	ENTER();
 
 	ffs_log("state %d setup_state %d flag %lu opened %d", ffs->state,
@@ -1906,7 +1903,6 @@ static struct ffs_data *ffs_data_new(const char *dev_name)
 static void ffs_data_clear(struct ffs_data *ffs)
 {
 	struct ffs_epfile *epfiles;
-	unsigned long flags;
 
 	ENTER();
 
@@ -2100,7 +2096,6 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
 
 static void ffs_func_eps_disable(struct ffs_function *func)
 {
-	struct ffs_data *ffs      = func->ffs;
 	struct ffs_ep *ep;
 	struct ffs_epfile *epfile;
 	unsigned short count;
