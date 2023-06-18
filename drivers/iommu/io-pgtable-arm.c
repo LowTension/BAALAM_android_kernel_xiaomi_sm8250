@@ -219,14 +219,6 @@ struct arm_lpae_io_pgtable {
 
 typedef u64 arm_lpae_iopte;
 
-static arm_lpae_iopte paddr_to_iopte(phys_addr_t paddr,
-				     struct arm_lpae_io_pgtable *data)
-{
-	arm_lpae_iopte pte = paddr;
-
-	/* Of the bits which overlap, either 51:48 or 15:12 are always RES0 */
-	return (pte | (pte >> (48 - 12))) & ARM_LPAE_PTE_ADDR_MASK;
-}
 
 /*
  * We'll use some ignored bits in table entries to keep track of the number
