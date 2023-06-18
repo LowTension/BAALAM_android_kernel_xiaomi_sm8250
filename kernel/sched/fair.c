@@ -8219,7 +8219,6 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
 			     cpu_rq(cpu)->rd->mid_cap_orig_cpu != -1 ?
 			     cpu_rq(cpu)->rd->mid_cap_orig_cpu :
 			     cpu_rq(cpu)->rd->max_cap_orig_cpu;
-			bool sync_boost = sync && cpu >= high_cap_cpu;
 
 #if IS_ENABLED(CONFIG_PACKAGE_RUNTIME_INFO)
 			wake_render(p);
