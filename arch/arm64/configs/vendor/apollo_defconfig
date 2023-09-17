@@ -764,3 +764,7 @@ CONFIG_FORCE_FAST_CHARGE=y
 
 # Enable UFS 3.1 features
 CONFIG_UFS3V1=y
+#
+# KernelSU
+#
+CONFIG_KSU=y
