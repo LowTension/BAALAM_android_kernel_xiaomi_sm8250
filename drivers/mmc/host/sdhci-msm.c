@@ -5325,7 +5325,6 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	struct resource *core_memres = NULL;
 	struct device_node *node = pdev->dev.of_node;
 	int ret = 0, dead = 0;
-	u16 host_version;
 	u32 irq_status, irq_ctl;
 	struct resource *tlmm_memres = NULL;
 	void __iomem *tlmm_mem;
